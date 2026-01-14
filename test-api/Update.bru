@@ -1,0 +1,28 @@
+meta {
+  name: Update
+  type: http
+  seq: 5
+}
+
+patch {
+  url: http://localhost:3000/user?id=1
+  body: json
+  auth: inherit
+}
+
+params:query {
+  id: 1
+}
+
+body:json {
+  {
+    "email": "joao.cara@outlook.com.br",
+    "name": "João Vitor de Oliveira Cara",
+    "password": "ativo123*"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

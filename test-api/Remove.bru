@@ -5,17 +5,21 @@ meta {
 }
 
 delete {
-  url: http://localhost:3000/user?id=3
+  url: http://localhost:3000/user?id=6
   body: none
   auth: inherit
 }
 
 params:query {
-  id: 3
+  id: 6
 }
 
 body:json {
   {}
+}
+
+body:form-urlencoded {
+  id: 6
 }
 
 settings {

@@ -1,41 +1,47 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { prisma } from 'lib/prisma';
+import { UserResponseDto } from './dto/user.response.dto';
+import { prisma } from '../lib/prisma';
+import { hashSync } from 'bcryptjs';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
-    const user = prisma.user.create({
+  async create(createUserDto: CreateUserDto) {
+    const passwordHash = hashSync(createUserDto.password, 10);
+    createUserDto.password = passwordHash;
+
+    const user = await prisma.user.create({
       data: createUserDto,
     });
-    return user;
+    return plainToInstance(UserResponseDto, user);
   }
 
   async findAll() {
     const users = await prisma.user.findMany();
-    return users;
+    return plainToInstance(UserResponseDto, users);
   }
 
-  findOne(id: number) {
-    const user = prisma.user.findUnique({
+  async findOne(id: number) {
+    const user = await prisma.user.findUnique({
       where: { id },
     });
-    return user;
+    return user ? plainToInstance(UserResponseDto, user) : null;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    const user = prisma.user.update({
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const user = await prisma.user.update({
       where: { id },
       data: updateUserDto,
     });
-    return user;
+    return plainToInstance(UserResponseDto, user);
   }
 
-  remove(id: number) {
-    const user = prisma.user.delete({
+  async remove(id: number) {
+    const user = await prisma.user.delete({
       where: { id },
     });
-    return user;
+    return plainToInstance(UserResponseDto, user);
   }
 }

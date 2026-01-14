@@ -1,0 +1,24 @@
+meta {
+  name: Remove
+  type: http
+  seq: 3
+}
+
+delete {
+  url: http://localhost:3000/user?id=3
+  body: none
+  auth: inherit
+}
+
+params:query {
+  id: 3
+}
+
+body:json {
+  {}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -17,6 +17,8 @@ Este projeto implementa uma API CRUD (Create, Read, Update, Delete) completa par
 - **Prisma** - ORM moderno e type-safe
 - **PostgreSQL** - Banco de dados relacional
 - **Swagger** - Documentação automática de API
+- **JWT (JSON Web Token)** - Autenticação stateless
+- **Passport.js** - Middleware de autenticação
 - **class-validator** - Validação de DTOs
 - **class-transformer** - Transformação de dados
 - **bcryptjs** - Criptografia de senhas
@@ -45,6 +47,8 @@ npm install
 ```env
 DATABASE_URL="postgresql://usuario:senha@localhost:5432/crud_db"
 NODE_ENV="development"
+JWT_SECRET="sua-chave-secreta-super-segura-aqui"
+JWT_EXPIRATION="24h"
 ```
 
 2. Configure o banco de dados com Prisma:
@@ -77,6 +81,12 @@ A documentação Swagger estará em `http://localhost:3000/api`
 
 ## Endpoints da API
 
+### Autenticação
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| POST | `/auth/login` | Autenticar usuário e obter JWT token |
+
 ### Usuários
 
 | Método | Endpoint | Descrição |
@@ -86,6 +96,69 @@ A documentação Swagger estará em `http://localhost:3000/api`
 | POST | `/users` | Criar novo usuário |
 | PUT | `/users/:id` | Atualizar usuário |
 | DELETE | `/users/:id` | Deletar usuário |
+
+## Autenticação
+
+O projeto utiliza **JWT (JSON Web Token)** para autenticação segura. Os tokens são gerados no endpoint `/auth/login` e devem ser incluídos no header `Authorization` das requisições protegidas.
+
+### Flow de Autenticação
+
+1. **Login**: Envie email e senha para `/auth/login`
+2. **Token**: Receba um JWT token (válido por tempo determinado)
+3. **Requisições**: Inclua o token no header: `Authorization: Bearer <seu-token>`
+
+### Exemplo: Login
+
+```bash
+curl -X POST http://localhost:3000/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "usuario@exemplo.com",
+    "password": "senha123"
+  }'
+```
+
+**Resposta de Sucesso (200)**
+
+```json
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "id": 1,
+    "email": "usuario@exemplo.com",
+    "name": "João Silva"
+  }
+}
+```
+
+### Exemplo: Requisição Autenticada
+
+```bash
+curl -X GET http://localhost:3000/users/1 \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+```
+
+### Proteção de Rotas
+
+Rotas protegidas utilizam o `@UseGuards(JwtAuthGuard)` para validar o token:
+
+```typescript
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+
+@Get(':id')
+@UseGuards(JwtAuthGuard)
+findOne(@Param('id') id: string) {
+  return this.userService.findOne(+id);
+}
+```
+
+### Segurança
+
+- ✅ Senhas criptografadas com **bcryptjs**
+- ✅ Tokens JWT com expiração
+- ✅ Validação de credenciais
+- ✅ Guards para rotas protegidas
 
 ### Exemplo de Requisição
 

@@ -79,6 +79,72 @@ A API estará disponível em `http://localhost:3000`
 
 A documentação Swagger estará em `http://localhost:3000/api`
 
+## Frontend
+
+Este projeto inclui um frontend moderno construído com **HTML5**, **CSS3** e **JavaScript Vanilla**, sem dependências externas.
+
+### Características do Frontend
+
+- 🎨 Interface moderna e responsiva
+- 🔐 Autenticação com JWT
+- 📱 Design mobile-first
+- ⚡ SPA (Single Page Application)
+- 🎯 Modais para CRUD de usuários
+- 🔔 Alertas de feedback ao usuário
+- 💾 Persistência de sessão com localStorage
+
+### Como Acessar o Frontend
+
+1. Certifique-se de que a API está rodando em `http://localhost:3000`
+2. Abra o navegador e acesse: `http://localhost:3000/public/index.html`
+
+### Funcionalidades do Frontend
+
+#### 📝 Autenticação
+- **Login**: Faça login com suas credenciais
+- **Registro**: Crie uma nova conta
+- **Logout**: Saia de sua conta (apaga o token)
+
+#### 👥 Gerenciamento de Usuários
+- **Listar Usuários**: Visualize todos os usuários em uma tabela
+- **Criar Usuário**: Abra um modal para adicionar novo usuário
+- **Editar Usuário**: Edite dados do usuário em um modal
+- **Deletar Usuário**: Confirme a exclusão em um modal seguro
+
+### Estrutura do Frontend
+
+```
+public/
+├── index.html              # Arquivo HTML principal
+├── css/
+│   └── style.css           # Estilos CSS (responsivos)
+└── js/
+    ├── config.js           # Configurações e objeto AUTH
+    ├── api.js              # Funções de requisição para API
+    ├── ui.js               # Funções de UI e navegação
+    ├── auth.js             # Lógica de autenticação
+    ├── users.js            # CRUD de usuários
+    └── main.js             # Inicialização da aplicação
+```
+
+### Tecnologias Frontend
+
+- **HTML5**: Estrutura semântica
+- **CSS3**: Gradientes, flexbox, grid e animações
+- **JavaScript ES6+**: Fetch API, async/await, template literals
+- **localStorage**: Persistência de tokens e dados do usuário
+
+### Desenvolvimento Frontend
+
+Os arquivos estão organizados de forma modular para fácil manutenção:
+
+- **config.js**: Configurações globais e gerenciamento de autenticação
+- **api.js**: Abstração das chamadas HTTP para a API
+- **ui.js**: Funções de navegação e controle de modais
+- **auth.js**: Event listeners e lógica de login/registro
+- **users.js**: Event listeners e lógica de CRUD de usuários
+- **main.js**: Inicialização da aplicação ao carregar a página
+
 ## Endpoints da API
 
 ### Autenticação
@@ -213,6 +279,17 @@ crud-prisma/
 │   ├── main.ts                    # Entrada da aplicação
 │   ├── lib/
 │   │   └── prisma.ts              # Serviço de conexão com Prisma
+│   ├── auth/
+│   │   ├── auth.controller.ts     # Controlador de autenticação
+│   │   ├── auth.service.ts        # Lógica de autenticação
+│   │   ├── auth.module.ts         # Módulo de autenticação
+│   │   ├── decorators/
+│   │   ├── dto/
+│   │   │   └── login.dto.ts
+│   │   ├── guards/
+│   │   │   └── jwt.guard.ts
+│   │   └── strategies/
+│   │       └── jwt.strategy.ts
 │   └── user/
 │       ├── user.controller.ts     # Controlador de usuários
 │       ├── user.service.ts        # Lógica de negócio
@@ -226,6 +303,17 @@ crud-prisma/
 ├── prisma/
 │   ├── schema.prisma              # Schema do banco de dados
 │   └── migrations/                # Histórico de migrações
+├── public/                        # Frontend estático
+│   ├── index.html                 # Página principal
+│   ├── css/
+│   │   └── style.css              # Estilos da aplicação
+│   └── js/
+│       ├── config.js              # Configurações globais
+│       ├── api.js                 # Chamadas para API
+│       ├── ui.js                  # Funções de UI
+│       ├── auth.js                # Lógica de autenticação
+│       ├── users.js               # CRUD de usuários
+│       └── main.js                # Inicialização
 ├── test-api/                      # Testes com Bruno
 └── generated/                     # Código gerado pelo Prisma
 ```
@@ -285,6 +373,38 @@ npx prisma migrate status
 - [Documentação Prisma](https://www.prisma.io/docs)
 - [PostgreSQL Docs](https://www.postgresql.org/docs)
 - [TypeScript Handbook](https://www.typescriptlang.org/docs)
+
+## Quick Start
+
+### 1️⃣ Configurar Backend
+
+```bash
+# Instalar dependências
+npm install
+
+# Configurar variáveis de ambiente (.env)
+# DATABASE_URL="postgresql://usuario:senha@localhost:5432/crud_db"
+# JWT_SECRET="sua-chave-secreta"
+
+# Executar migrações
+npx prisma migrate dev
+
+# Iniciar a API
+npm run start:dev
+```
+
+### 2️⃣ Acessar o Frontend
+
+```
+Abra no navegador: http://localhost:3000/public/index.html
+```
+
+### 3️⃣ Testar a Aplicação
+
+1. **Crie uma conta**: Clique em "Criar nova conta"
+2. **Faça login**: Use suas credenciais
+3. **Teste o CRUD**: Crie, edite e delete usuários
+4. **Confirme a exclusão**: Use o modal de confirmação
 
 ## Licença
 

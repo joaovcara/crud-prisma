@@ -1,6 +1,6 @@
 // Configuração global da aplicação
 const CONFIG = {
-    API_URL: 'http://localhost:3000',
+    API_URL: 'https://crud-prisma.onrender.com',
     ALERTS_TIMEOUT: 4000,
     DATE_LOCALE: 'pt-BR',
 };

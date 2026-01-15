@@ -28,7 +28,7 @@ export class AuthService {
     };
   }
 
-  async validateUser(payload: any) {
+  async validateUser(payload: { sub: number; email: string }) {
     const user = await this.userService.findOne(payload.sub);
     if (!user) {
       throw new UnauthorizedException('Usuário não encontrado');

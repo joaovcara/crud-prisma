@@ -10,6 +10,14 @@ Uma API REST robusta e escalável para gerenciamento de usuários, construída c
 
 Este projeto implementa uma API CRUD (Create, Read, Update, Delete) completa para gerenciar usuários. A aplicação segue as melhores práticas de arquitetura, utiliza validação de dados com class-validator, criptografia de senhas com bcryptjs, e documenta os endpoints com Swagger.
 
+## 🚀 Aplicação em Produção
+
+A aplicação está disponível e funcional no seguinte endereço:
+
+🔗 **https://crud-prisma-eta.vercel.app/**
+
+> API hospedada no Render + Frontend hospedados na Vercel, utilizando PostgreSQL (Neon) e Prisma ORM.
+
 ## Tecnologias
 
 - **NestJS** - Framework progressivo para Node.js

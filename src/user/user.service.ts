@@ -44,4 +44,11 @@ export class UserService {
     });
     return plainToInstance(UserResponseDto, user);
   }
+
+  async findByEmail(email: string) {
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
+    return user;
+  }
 }

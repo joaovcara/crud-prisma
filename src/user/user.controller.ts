@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseInterceptors, ClassSerializerInterceptor, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserResponseDto } from './dto/user.response.dto';
+import { JwtGuard } from '../auth/guards/jwt.guard';
 
 @ApiTags('users')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -24,17 +25,22 @@ export class UserController {
   }
 
   @Get()
+  @UseGuards(JwtGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Listar todos os usuários' })
   @ApiResponse({
     status: 200,
     description: 'Lista de usuários',
     type: [UserResponseDto],
   })
+  @ApiResponse({ status: 401, description: 'Não autorizado' })
   async findAll() {
     return await this.userService.findAll();
   }
 
   @Get('all')
+  @UseGuards(JwtGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Encontrar um usuário por ID' })
   @ApiQuery({ name: 'id', type: Number, description: 'ID do usuário' })
   @ApiResponse({
@@ -43,11 +49,14 @@ export class UserController {
     type: UserResponseDto,
   })
   @ApiResponse({ status: 404, description: 'Usuário não encontrado' })
+  @ApiResponse({ status: 401, description: 'Não autorizado' })
   async findOne(@Query('id') id: number) {
     return await this.userService.findOne(+id);
   }
 
   @Patch()
+  @UseGuards(JwtGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Atualizar um usuário' })
   @ApiQuery({ name: 'id', type: Number, description: 'ID do usuário' })
   @ApiResponse({
@@ -56,11 +65,14 @@ export class UserController {
     type: UserResponseDto,
   })
   @ApiResponse({ status: 404, description: 'Usuário não encontrado' })
+  @ApiResponse({ status: 401, description: 'Não autorizado' })
   async update(@Query('id') id: number, @Body() updateUserDto: UpdateUserDto) {
     return await this.userService.update(+id, updateUserDto);
   }
 
   @Delete()
+  @UseGuards(JwtGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Deletar um usuário' })
   @ApiQuery({ name: 'id', type: Number, description: 'ID do usuário' })
   @ApiResponse({
@@ -69,6 +81,7 @@ export class UserController {
     type: UserResponseDto,
   })
   @ApiResponse({ status: 404, description: 'Usuário não encontrado' })
+  @ApiResponse({ status: 401, description: 'Não autorizado' })
   async remove(@Query('id') id: number) {
     return await this.userService.remove(+id);
   }

@@ -19,7 +19,6 @@ async function bootstrap() {
     .setTitle('User CRUD API')
     .setDescription('API de gerenciamento de usuários com NestJS e Prisma')
     .setVersion('1.0.0')
-    .addTag('users')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

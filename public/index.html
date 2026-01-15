@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Usuários</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- ===== LOGIN PAGE ===== -->
+    <div class="login-container active" id="loginPage">
+        <h1>Login</h1>
+        <p>Sistema de Gerenciamento de Usuários</p>
+        
+        <div class="alert alert-error" id="loginError"></div>
+
+        <form class="login-form" id="loginForm">
+            <div class="form-group">
+                <label for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" placeholder="seu@email.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="loginPassword">Senha</label>
+                <input type="password" id="loginPassword" placeholder="Sua senha" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Entrar</button>
+            <div class="register-link">
+                Não tem conta? <button type="button" id="goToRegisterBtn" class="btn-secondary" style="all: unset; color: #667eea; font-weight: 600; cursor: pointer; text-decoration: underline;">Criar nova conta</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- ===== REGISTER PAGE ===== -->
+    <div class="login-container" id="registerPage">
+        <h1>Criar Conta</h1>
+        <p>Preencha os dados para criar uma nova conta</p>
+        
+        <div class="alert alert-error" id="registerError"></div>
+
+        <form class="login-form" id="registerForm">
+            <div class="form-group">
+                <label for="registerName">Nome</label>
+                <input type="text" id="registerName" placeholder="Seu nome completo" required>
+            </div>
+
+            <div class="form-group">
+                <label for="registerEmail">Email</label>
+                <input type="email" id="registerEmail" placeholder="seu@email.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="registerPassword">Senha</label>
+                <input type="password" id="registerPassword" placeholder="Mínimo 6 caracteres" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Criar Conta</button>
+            <div class="register-link">
+                Já tem conta? <button type="button" id="goToLoginBtn" class="btn-secondary" style="all: unset; color: #667eea; font-weight: 600; cursor: pointer; text-decoration: underline;">Fazer login</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- ===== DASHBOARD PAGE ===== -->
+    <div class="dashboard-container" id="dashboardPage">
+        <div class="header">
+            <div>
+                <h1>Gerenciamento de Usuários</h1>
+            </div>
+            <div class="user-info">
+                <p>Bem-vindo, <strong id="currentUserName">User</strong></p>
+                <p id="currentUserEmail" style="font-size: 14px; opacity: 0.9;"></p>
+                <button class="btn-logout" id="logoutBtn">Sair</button>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="alert alert-success" id="successAlert"></div>
+            <div class="alert alert-error" id="errorAlert"></div>
+            <div class="alert alert-info" id="infoAlert"></div>
+
+            <!-- ===== CREATE USER SECTION ===== -->
+            <div class="section">
+                <h2>Criar Novo Usuário</h2>
+                <button class="btn btn-create" id="openCreateModalBtn">+ Novo Usuário</button>
+            </div>
+
+            <!-- ===== USERS LIST SECTION ===== -->
+            <div class="section">
+                <h2>Lista de Usuários</h2>
+                <div class="loading" id="usersLoading">
+                    <div class="spinner"></div>
+                    <p>Carregando usuários...</p>
+                </div>
+                <div class="users-table-container">
+                    <table id="usersTable" style="display: none;">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Data de Criação</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                        </tbody>
+                    </table>
+                    <div class="no-data" id="noUsersData" style="display: none;">
+                        <p>Nenhum usuário encontrado</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== CREATE USER MODAL ===== -->
+    <div class="modal" id="createModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeCreateModal()">&times;</button>
+            <h3>Criar Novo Usuário</h3>
+            <form class="modal-form" id="createUserForm">
+                <div class="form-group">
+                    <label for="createName">Nome</label>
+                    <input type="text" id="createName" placeholder="Nome completo" required>
+                </div>
+                <div class="form-group">
+                    <label for="createEmail">Email</label>
+                    <input type="email" id="createEmail" placeholder="email@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="createPassword">Senha</label>
+                    <input type="password" id="createPassword" placeholder="Mínimo 6 caracteres" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Criar Usuário</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== EDIT USER MODAL ===== -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeEditModal()">&times;</button>
+            <h3>Editar Usuário</h3>
+            <form class="modal-form" id="editUserForm">
+                <input type="hidden" id="editUserId">
+                <div class="form-group">
+                    <label for="editName">Nome</label>
+                    <input type="text" id="editName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editEmail">Email</label>
+                    <input type="email" id="editEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="editPassword">Senha (deixe em branco para manter a atual)</label>
+                    <input type="password" id="editPassword" placeholder="Nova senha (opcional)">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Salvar Alterações</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== DELETE CONFIRMATION MODAL ===== -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <h3>Confirmar Exclusão</h3>
+            <p style="color: #666; margin-bottom: 20px;">Tem certeza que deseja deletar este usuário? Esta ação não pode ser desfeita.</p>
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button class="btn" style="background: #f0f0f0; color: #333; width: auto; flex: 1;" onclick="closeDeleteModal()">Cancelar</button>
+                <button class="btn btn-primary" style="width: auto; flex: 1;" id="confirmDeleteBtn">Deletar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/users.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

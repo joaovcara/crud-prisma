@@ -1,0 +1,24 @@
+meta {
+  name: FindOne
+  type: http
+  seq: 2
+}
+
+get {
+  url: https://crud-prisma.onrender.com/user/all?id=8
+  body: none
+  auth: bearer
+}
+
+params:query {
+  id: 8
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjgsImVtYWlsIjoiam9hby5jYXJhQG91dGxvb2suY29tLmJyIiwiaWF0IjoxNzY4NDQ1Mzg3LCJleHAiOjE3Njg1MzE3ODd9.vgImfk3GF28Mh-fJGl78m0YlRg6stVjiEAHYpuCnvTE
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
